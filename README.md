@@ -23,6 +23,21 @@
 - Go 版新增环境变量：`ICONS_REPO_URL`（图标库 git 源，可指向镜像）、`ICONS_REPO_FALLBACK`（镜像失败回退地址）、`GIT_DEPTH`（浅克隆深度，默认 `1`，省约 250MB）、`UPDATE_INTERVAL`（定时检查间隔，默认 `1h`）；补齐上游文档有但原代码缺失的 `CUSTOM_URL` / `TITLE`。
 - 其余原样尊重上游：`hd-icons/` Python 版、界面、挂载路径与端口均未改动；下文使用说明与更新日志均为上游原文。
 
+### systemd 守护运行（Go 二进制）
+
+```bash
+sudo useradd -r -d /var/lib/hd-icons -s /usr/sbin/nologin hd-icons
+sudo mkdir -p /var/lib/hd-icons/icons
+sudo cp hd-icons-linux-amd64 /usr/local/bin/hd-icons
+sudo cp hd-icons-go/hd-icons.service /etc/systemd/system/
+sudo chown -R hd-icons:hd-icons /var/lib/hd-icons
+sudo systemctl daemon-reload
+sudo systemctl enable --now hd-icons
+systemctl status hd-icons
+```
+
+变量在 `hd-icons-go/hd-icons.service` 里改（`ALL_PROXY` / `ICONS_REPO_URL` / `TITLE` 等），改完 `sudo systemctl restart hd-icons`。
+
 ## 📝 项目简介（上游原文）
 **HD-Icons** 项目存储了一些高清图标（**1024x1024**）和矢量图标，地址：https://github.com/xushier/HD-Icons 。
 
