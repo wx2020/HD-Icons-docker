@@ -1,0 +1,31 @@
+[Unit]
+Description=HD-Icons 图标库 (Go 版)
+Documentation=https://github.com/wx2020/HD-Icons-docker
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=hd-icons
+Group=hd-icons
+WorkingDirectory=/var/lib/hd-icons
+ExecStart=/usr/local/bin/hd-icons
+Environment=PORT=50560
+Environment=ICONS_DIR=/var/lib/hd-icons/icons
+# 网络连不上 GitHub 时二选一：
+#Environment=ALL_PROXY=http://127.0.0.1:7890
+#Environment=ICONS_REPO_URL=https://gh-proxy.example.com/https://github.com/xushier/HD-Icons.git
+# 可选：
+#Environment=TITLE=小迪的图标库
+#Environment=CUSTOM_URL=
+#Environment=UPDATE_INTERVAL=1h
+#Environment=GIT_DEPTH=1
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/hd-icons
+
+[Install]
+WantedBy=multi-user.target
