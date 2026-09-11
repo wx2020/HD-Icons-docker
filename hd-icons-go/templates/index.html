@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <!-- 引入网页图标 -->
+    <link rel="icon" href="/static/assets/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/xdtx.css" rel="stylesheet">
+    <link rel="manifest" href="/static/manifest.json">
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('Service Worker 注册成功:', registration);
+          })
+          .catch((error) => {
+            console.log('Service Worker 注册失败:', error);
+          });
+      }
+    </script>
+    <style>
+    </style>
+</head>
+<body class="p-6 day-mode">
+    <!-- 左上角图标按钮 -->
+    <div class="flex items-center space-x-4 mb-4">
+        <a href="https://github.com/xushier/HD-Icons" target="_blank" class="text-gray-700 hover:text-purple-600">
+            <i class="fab fa-github text-xl"></i>
+        </a>
+        <a href="https://space.bilibili.com/32313260" target="_blank" class="text-gray-700 hover:text-purple-600">
+            <i class="fab fa-bilibili text-xl"></i>
+        </a>
+        <a href="https://link3.cc/xiaoditx" target="_blank" class="text-gray-700 hover:text-purple-600">
+            <i class="fab fa-weixin text-xl"></i>
+        </a>
+        <a href="https://www.youtube.com/@xiaoditx" target="_blank" class="text-gray-700 hover:text-purple-600">
+            <i class="fab fa-youtube text-xl"></i>
+        </a>
+        <a href="https://www.douyin.com/user/MS4wLjABAAAAN_vmSoRblD35MRz3KfHsN-bDKyW3tpq-jWk7N7cg3NggEo5ZeVkMWx_X2jK_PYzo" target="_blank" class="text-gray-700 hover:text-purple-600">
+            <i class="fab fa-tiktok text-xl"></i>
+        </a>
+        <a href="https://zhiyou.smzdm.com/member/9985726306" target="_blank" class="text-gray-700 hover:text-purple-600">
+            <i class="fas fa-shopping-cart text-xl"></i>
+        </a>
+    </div>
+
+    <!-- 检查更新和模式切换 -->
+    <div class="flex justify-end mb-4 space-x-4 absolute top-0 right-0 p-4">
+        <button id="toggle-mode" class="p-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <i class="fas fa-moon"></i>
+            <span class="hidden md:inline">夜间模式</span>
+        </button>
+        <button id="check-update" class="p-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+            <i class="fas fa-sync"></i>
+            <span class="hidden md:inline">检查更新</span>
+        </button>
+    </div>
+
+    <!-- 标题和介绍 -->
+    <div class="text-center mb-6">
+        <h1 class="text-5xl font-bold">
+            <a href="/">{{.Title}}</a>
+        </h1>
+        <p class="text-xl intro-text mt-2 font-bold">单击复制图标地址</p>
+    </div>
+    
+    <!-- 搜索框 -->
+    <div class="flex items-center justify-center space-x-4 mb-6">
+        <input type="text" id="search" placeholder="输入关键词，回车搜索" class="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 search-input font-bold" onkeypress="handleKeyPress(event)" style="padding: 0.3rem 0.8rem !important; border-radius: 1rem !important;">
+        <button id="search-button" onclick="loadImages()" class="p-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <i class="fas fa-search"></i>
+            <span class="hidden md:inline">搜索</span>
+        </button>
+        <button id="upload-button" onclick="showUploadPopup()" class="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <i class="fas fa-upload"></i>
+            <span class="hidden md:inline">上传</span>
+        </button>
+    </div>
+
+    <!-- 分类按钮 -->
+    <div class="flex items-center justify-center space-x-4 mb-4">
+        <button id="btn-all" onclick="setImageType('all')" class="p-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 category-button">
+            <i class="fas fa-grip-lines"></i>
+            <span class="hidden md:inline">所有</span>
+        </button>
+        <button id="btn-border-radius" onclick="setImageType('border-radius')" class="p-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 category-button">
+            <i class="fas fa-square"></i>
+            <span class="hidden md:inline">圆角</span>
+        </button>
+        <button id="btn-circle" onclick="setImageType('circle')" class="p-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 category-button">
+            <i class="fas fa-circle"></i>
+            <span class="hidden md:inline">圆形</span>
+        </button>
+        <button id="btn-svg" onclick="setImageType('svg')" class="p-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 category-button">
+            <i class="fas fa-arrow-right"></i>
+            <span class="hidden md:inline">矢量</span>
+        </button>
+        <button id="btn-upload" onclick="setImageType('upload')" class="p-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 category-button">
+            <i class="fas fa-upload"></i>
+            <span class="hidden md:inline">自定</span>
+        </button>
+    </div>
+
+    <!-- 分隔线 -->
+    <div class="border-b border-gray-400 mb-3"></div>
+
+    <!-- 状态显示 -->
+    <div id="status" class="flex items-center justify-center mb-3"></div>
+    
+    <!-- 图片容器 -->
+    <div id="image-container" class="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-10 gap-2">
+        <!-- 加载动画 -->
+        <div id="loading-spinner" class="col-span-full flex justify-center items-center">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- 上传弹窗 -->
+    <div id="upload-popup" class="popup" style="width: 500px; height: 500px;">
+        <div class="text-center">
+            <div class="p-4">
+                <div id="drop-zone" class="border-2 border-dashed border-gray-400 p-8 rounded-lg">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
+                    <p class="mt-2">点击选择文件或拖动文件到这里</p> <!-- 修改文字 -->
+                    <input type="file" id="file-input" multiple style="display: none;" onchange="handleFileSelect()">
+                </div>
+                <!-- 添加分隔线 -->
+                <div class="border-b border-gray-400 my-4"></div>
+                <!-- 固定“已选择文件”不随滚动条滚动 -->
+                <div style="position: sticky; top: 0; background-color: white; z-index: 1;">
+                    <p class="font-bold">已选择文件：</p>
+                </div>
+                <!-- 文件列表区域 -->
+                <div id="file-list" class="mt-2 text-left" style="max-height: 110px; overflow-y: auto;">
+                </div>
+                <!-- 添加分隔线 -->
+                <div class="border-b border-gray-400 my-4"></div>
+                <div id="upload-progress" class="mt-4">
+                    <div class="w-full bg-gray-200 rounded-full">
+                        <div id="progress-bar" class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 0%"></div>
+                    </div>
+                    <p id="upload-status" class="mt-2 text-sm text-gray-600">等待上传...</p>
+                </div>
+                <div class="flex justify-center space-x-4 mt-4">
+                    <button onclick="closeUploadPopup()" class="p-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                        <i class="fas fa-times"></i> 关闭
+                    </button>
+                    <button onclick="uploadFiles()" class="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <i class="fas fa-upload"></i> 上传
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      window.CUSTOM_URL = "{{.CustomURL}}";
+    </script>
+    <script src="/static/js/xdtx.js"></script>
+    
+    <!-- 分隔线 -->
+    <div class="border-b border-gray-400 mt-8"></div>
+    
+    <!-- 页脚 -->
+    <footer class="text-center py-4 mt-8 text-sm text-gray-600" style="background-color: inherit;">
+        Copyright © 2025 Powered By 小迪同学 All Rights Reserved.
+    </footer>
+</body>
+</html>

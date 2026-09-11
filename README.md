@@ -4,6 +4,9 @@
 
 <p><em>HD-Icons 图标项目的展示和使用工具</em></p>
 
+> 本仓库为 Fork，**上游项目为 [xushier/HD-Icons-docker](https://github.com/xushier/HD-Icons-docker)**，核心功能与创意均归上游作者（小迪同学）所有，特此致谢。
+> 本 Fork 的改动详见下方「Fork 说明」，上游的更新日志、赞助与免责声明保持原样。
+
 [![GitHub stars](https://img.shields.io/github/stars/xushier/HD-Icons-docker)](https://github.com/xushier/HD-Icons-docker/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/xushier/HD-Icons-docker)](https://github.com/xushier/HD-Icons-docker/network)
 [![GitHub issues](https://img.shields.io/github/issues/xushier/HD-Icons-docker)](https://github.com/xushier/HD-Icons-docker/issues)
@@ -12,7 +15,15 @@
 
 </div>
 
-## 📝 项目简介
+## 🍴 Fork 说明（相对上游的改动）
+
+上游地址：https://github.com/xushier/HD-Icons-docker ，图标库地址：https://github.com/xushier/HD-Icons 。
+
+- 新增 `hd-icons-go/`：与原 Python 服务 API 行为 1:1 对齐的 Go 实现（单二进制 + 多阶段小镜像），详见 `hd-icons-go/README-GO.md`。
+- Go 版新增环境变量：`ICONS_REPO_URL`（图标库 git 源，可指向镜像）、`ICONS_REPO_FALLBACK`（镜像失败回退地址）、`GIT_DEPTH`（浅克隆深度，默认 `1`，省约 250MB）、`UPDATE_INTERVAL`（定时检查间隔，默认 `1h`）；补齐上游文档有但原代码缺失的 `CUSTOM_URL` / `TITLE`。
+- 其余原样尊重上游：`hd-icons/` Python 版、界面、挂载路径与端口均未改动；下文使用说明与更新日志均为上游原文。
+
+## 📝 项目简介（上游原文）
 **HD-Icons** 项目存储了一些高清图标（**1024x1024**）和矢量图标，地址：https://github.com/xushier/HD-Icons 。
 
 随着 **HD-Icons** 的图标越来越多，图标的展示和查找也变得麻烦起来，于是产生了该项目，用于图标的**展示、搜索、快速复制地址**。
@@ -160,7 +171,7 @@ services:
 - 图标搜索；
 - 日间、夜间模式切换。
 
-## 🤝 赞助（备注：图标）
+## 🤝 赞助（上游作者，备注：图标）
 <img src="preview/wechat.jpg" alt="wechat" width="400" height="600"><img src="preview/alipay.jpg" alt="alipay" width="400" height="600">
 
 ## 📜 免责声明

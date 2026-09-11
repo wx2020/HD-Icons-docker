@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  hd-icons:
+    build: .
+    image: xushier/hd-icons:go
+    container_name: HD-Icons
+    ports:
+      - 50560:50560
+    volumes:
+      - /mnt/user/appdata/HD-Icons/icons:/app/icons
+      # 若需要自定义字体可添加映射/app/static/font路径，在对应主机路径下放入字体文件，font_zh.ttf为中文，font_en.ttf为英文。然后ctrl+F5强制刷新首页生效，或者重启容器生效。
+      # - /mnt/user/appdata/HD-Icons/font:/app/static/font
+    environment:
+      # 首次使用日志若一直显示卡在git clone，或者后续更新一直出错，那么是网络无法连接github，可添加 ALL_PROXY 变量设置 HTTP 代理解决，将下面的 http://192.168.1.2:7890 换一下地址和端口即可。
+      # - ALL_PROXY=http://192.168.1.2:7890
+      # 图标库 git 源，默认官方 GitHub；连不上时可指向镜像（如加速站或 gitee 同步仓），切换后重启即生效，无需删卷。
+      # 镜像 clone/pull 失败时自动回退官方源（本次运行内保持，不反复重试故障镜像）。
+      # - ICONS_REPO_URL=https://github.com/xushier/HD-Icons.git
+      # 回退地址备选，默认官方源；也可指向第二镜像。
+      # - ICONS_REPO_FALLBACK=https://github.com/xushier/HD-Icons.git
+      # 自定义复制地址的前缀，若不填且切换到了云端模式则默认为同源地址。
+      # - CUSTOM_URL=http://xxx.xxx.xxx/icons/HD-Icons
+      # 自定义标题和网页标签页，不填默认为“小迪的图标库”。
+      # - TITLE=小迪的图标库
+      # 定时检查上游更新间隔，支持 Go duration 格式（如 1h、30m），默认 1h。
+      # - UPDATE_INTERVAL=1h
+      # 首次克隆深度，默认 1（浅克隆，省约 250MB）；设为空或 0 则完整克隆。
+      # - GIT_DEPTH=1
+      # - PORT=50560
+      # - ICONS_DIR=/app/icons

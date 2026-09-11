@@ -1,0 +1,235 @@
+        /* 引入自定义字体 */
+        @font-face {
+            font-family: 'CustomFont';
+            src: url('/static/fonts/font.ttf') format('truetype');
+        }
+        body {
+            font-family: 'CustomFont', sans-serif;
+            letter-spacing: 1.5px; /* 全局字体间距 */
+        }
+        .image-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem; /* 默认圆角 */
+            overflow: hidden;
+            background-color: white; /* 卡片背景颜色 */
+        }
+        .filename {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100px;
+            font-size: 0.75rem; /* 更小的字体 */
+            color: black; /* 卡片内字体颜色 */
+            font-weight: bold; /* 加粗 */
+        }
+        .day-mode {
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb); /* 默认背景 */
+            color: #1e293b; /* 默认文字颜色 */
+        }
+        .day-mode .search-input {
+            background-color: white; /* 默认背景 */
+            color: #4c1d95; /* 深紫色文字 */
+        }
+        .day-mode .image-card {
+            background-color: white; /* 默认背景 */
+            color: #1e293b; /* 默认文字颜色 */
+        }
+        .night-mode {
+            background: linear-gradient(135deg, #4c1d95, #2d3748); /* 较深的紫色 */
+            color: #e9d8fd; /* 浅色文字 */
+        }
+        .night-mode .search-input {
+            background-color: #e9d8fd; /* 较浅的紫色 */
+            color: #4c1d95; /* 深紫色文字 */
+        }
+        .night-mode .image-card {
+            background-color: #e9d8fd; /* 较浅的紫色 */
+            color: #4c1d95; /* 较深的紫色 */
+        }
+        .night-mode .intro-text {
+            color: #e9d8fd; /* 夜间模式介绍文字颜色 */
+            font-weight: bold; /* 加粗 */
+        }
+        .night-mode .text-xl {
+            color: #e9d8fd; /* 左上角logo夜间模式为浅色 */
+        }
+        .status-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.3rem 0.8rem 0.3rem !important;
+            border-radius: 1rem !important;
+            background-color: #6b46c1; /* 紫色按钮 */
+            color: white;
+            font-weight: 500;
+            margin: 0.25rem;
+        }
+        .feedback-button {
+            background-color: #e53e3e; /* 红色按钮 */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .feedback-button:hover {
+            background-color: #c53030; /* 悬停时颜色变深 */
+        }
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 1000;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            width: auto; /* 动态调整宽度 */
+            max-width: 90%; /* 最大宽度 */
+            max-height: 90%; /* 最大高度 */
+        }
+        .popup.active {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .overlay.active {
+            opacity: 1;
+        }
+        .copy-success {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #7e22ce;
+            color: white;
+            padding: 0.4rem 1rem 0.5rem 1rem;
+            border-radius: 1.5rem;
+            font-size: 0.875rem;
+            font-weight: bold;
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .copy-success.active {
+            opacity: 1;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease; /* 加长动画时间 */
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #6b46c1;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        /* 左上角图标按钮样式 */
+        .icon-buttons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.75);
+            border-bottom-right-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .icon-buttons a {
+            color: #4a5568; /* 默认颜色 */
+            transition: color 0.3s ease;
+        }
+        .icon-buttons a:hover {
+            color: #6b46c1; /* 悬停颜色 */
+        }
+        /* 按钮内边距和圆角 */
+        button {
+            padding: 0.3rem 0.8rem 0.3rem !important;
+            border-radius: 1rem !important;
+        }
+        /* .mb-6 的下外边距改为 1rem */
+        .mb-6 {
+            margin-bottom: 1rem !important;
+        }
+        
+        /* 左上角图标大小改为 1rem */
+        .fab, .fas {
+            font-size: 1rem !important;
+        }
+
+        .night-mode footer {
+            color: #e9d8fd; /* 夜间模式文字颜色 */
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            background-color: #f3f4f6; /* 设置背景颜色 */
+        }
+        body.day-mode {
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb); /* 默认背景 */
+        }
+        body.night-mode {
+            background: linear-gradient(135deg, #4c1d95, #2d3748); /* 夜间模式背景 */
+        }
+
+        /* 手机端隐藏按钮文字 */
+        @media (max-width: 768px) {
+            #check-update span,
+            #toggle-mode span,
+            #search-button span,
+            #upload-button span,
+            .category-button span {
+                display: none;
+            }
+        }
+
+        /* 图标卡片下方按钮样式 */
+        .image-buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.5rem;
+        }
+        .image-buttons button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #4a5568; /* 默认颜色 */
+        }
+        .image-buttons button:hover {
+            color: #6b46c1; /* 悬停颜色 */
+        }
+        .image-buttons .delete-button {
+            color: #ef4444; /* 红色 */
+        }
+        .image-buttons .delete-button:hover {
+            color: #dc2626; /* 深红色 */
+        }
