@@ -26,10 +26,13 @@
 ### systemd 守护运行（Go 二进制）
 
 ```bash
+# 二进制：从 Release 下载对应版本（以 v1.0 为例）
+sudo curl -L -o /usr/local/bin/hd-icons https://github.com/wx2020/HD-Icons-docker/releases/download/v1.0/hd-icons-linux-amd64
+sudo chmod +x /usr/local/bin/hd-icons
+# service 文件：在本仓库根目录执行
+sudo cp hd-icons-go/hd-icons.service /etc/systemd/system/
 sudo useradd -r -d /var/lib/hd-icons -s /usr/sbin/nologin hd-icons
 sudo mkdir -p /var/lib/hd-icons/icons
-sudo cp hd-icons-linux-amd64 /usr/local/bin/hd-icons
-sudo cp hd-icons-go/hd-icons.service /etc/systemd/system/
 sudo chown -R hd-icons:hd-icons /var/lib/hd-icons
 sudo systemctl daemon-reload
 sudo systemctl enable --now hd-icons

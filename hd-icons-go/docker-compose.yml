@@ -27,4 +27,6 @@ services:
       # 首次克隆深度，默认 1（浅克隆，省约 250MB）；设为空或 0 则完整克隆。
       # - GIT_DEPTH=1
       # - PORT=50560
+      # 监听地址，默认 0.0.0.0；Docker 部署勿改。
+      # - LISTEN_ADDR=0.0.0.0
       # - ICONS_DIR=/app/icons

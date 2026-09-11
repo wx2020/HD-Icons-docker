@@ -38,6 +38,7 @@ var staticFS embed.FS
 var (
 	iconsDir      string
 	port          string
+	listenAddr    string // 监听地址，默认 0.0.0.0（全网卡）；systemd 裸跑可设 127.0.0.1
 	title         string
 	customURL     string
 	fontDirExt    string // 外部字体挂载目录，默认 /app/static/font
@@ -638,9 +639,14 @@ func withLogging(next http.Handler) http.Handler {
 func main() {
 	iconsDir = getenv("ICONS_DIR", "/app/icons")
 	port = getenv("PORT", "50560")
+	listenAddr = getenv("LISTEN_ADDR", "0.0.0.0")
 	title = getenv("TITLE", "小迪的图标库")
 	customURL = strings.TrimSuffix(getenv("CUSTOM_URL", ""), "/")
 	fontDirExt = getenv("FONT_DIR", "/app/static/font")
+	// systemd 守护时 stdout 接 journal（自带时间戳），关掉 Go 日志前缀避免双时间
+	if os.Getenv("JOURNAL_STREAM") != "" || os.Getenv("INVOCATION_ID") != "" {
+		log.SetFlags(0)
+	}
 	repoURL = strings.TrimSpace(getenv("ICONS_REPO_URL", defaultRepoURL))
 	if repoURL == "" {
 		repoURL = defaultRepoURL
@@ -681,7 +687,7 @@ func main() {
 	mux.HandleFunc("/upload-image", handleUpload)
 	mux.HandleFunc("/delete-image", handleDelete)
 
-	addr := "0.0.0.0:" + port
+	addr := listenAddr + ":" + port
 	log.Printf("HD-Icons Go 版启动: %s, icons=%s, title=%s", addr, iconsDir, title)
 	srv := &http.Server{
 		Addr:         addr,

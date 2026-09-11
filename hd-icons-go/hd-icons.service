@@ -11,6 +11,8 @@ Group=hd-icons
 WorkingDirectory=/var/lib/hd-icons
 ExecStart=/usr/local/bin/hd-icons
 Environment=PORT=50560
+# 只允许本机访问时取消注释；Docker 部署必须保持 0.0.0.0
+#Environment=LISTEN_ADDR=127.0.0.1
 Environment=ICONS_DIR=/var/lib/hd-icons/icons
 # 网络连不上 GitHub 时二选一：
 #Environment=ALL_PROXY=http://127.0.0.1:7890
@@ -20,6 +22,8 @@ Environment=ICONS_DIR=/var/lib/hd-icons/icons
 #Environment=CUSTOM_URL=
 #Environment=UPDATE_INTERVAL=1h
 #Environment=GIT_DEPTH=1
+# Go 堆上限软限制：启动期缩略图 burst 后促使 GC 归还内存，IO 型服务无感
+Environment=GOMEMLIMIT=64MiB
 Restart=always
 RestartSec=5
 NoNewPrivileges=true

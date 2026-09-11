@@ -22,6 +22,7 @@ docker compose up -d
 | 变量 | 默认 | 说明 |
 |---|---|---|
 | `PORT` | `50560` | 监听端口 |
+| `LISTEN_ADDR` | `0.0.0.0` | 监听地址；systemd 裸跑只允许本机时设 `127.0.0.1`，Docker 必须保持 `0.0.0.0` |
 | `ICONS_DIR` | `/app/icons` | 图标数据卷（与原容器一致） |
 | `TITLE` | `小迪的图标库` | 网页标题（README 有、原 app.py 缺失，本次补齐） |
 | `CUSTOM_URL` | 空（=同源） | 单击复制地址前缀（README 有、原 app.py 缺失，本次补齐，前端 `window.CUSTOM_URL`） |
